@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/podcast/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css" />
+{% endblock %}
+
+{% block title %}Hello Admin!{% endblock %}
+
+{% block body %}
+   <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('app_login') }}">PodcastApp</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse d-flex justify-content-end " id="navbarSupportedContent">
+                <ul class="navbar-nav m-0">
+                    <li class="nav-item">
+                        <a href="{{ path('app_admin') }}" class="btn btn-success">Administration Zone</a>
+                    </li>
+                    
+                    <li class="nav-item" style="margin-left: 5px">
+                        <a class="btn btn-secondary" href="{{ path('app_logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        {% if error.state %}
+            <div class="alert alert-danger mt-2 mb-2 alert-dismissible" role="alert">
+                {{ error.message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+
+        {% if success.state %}
+            <div class="alert alert-success mt-2 mb-2 alert-dismissible" role="alert">
+                <div> {{ success.message }} </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}   
+        
+        
+        {% if user.getPodcasts|length != 0 %}
+            <div class="row d-flex justify-content-center mt-4">
+                <div class="col-md-6 col-sm-12">
+                    <h3 >
+                        Podcasts of {{user.getFirstName ~" "~ user.getLastName}} 
+                    </h3>
+                </div>
+            </div>
+
+            <div class="row d-flex justify-content-center">
+            <div class="col-md-6 col-sm-12">
+            
+            <section class="player mt-4">
+
+                <!-- Title -->
+                <h1 class="title" id="title"></h1>
+
+                <!-- Cover -->
+                <img src="" alt="" class="cover" id="cover">
+
+                <!-- Audio HTML Media elememt -->
+                <audio src="" id="audio"></audio>
+
+                <!-- Progress bar -->
+                <div id="progresscontainer" class="progresscontainer">
+                    <section id="progress" class="progress"></section>
+                </div>
+
+                <!-- Controls -->
+                <section class="controls">
+                    <button class="prev">
+                        <i id="prev" class="fas fa-backward"></i>
+                    </button>
+                    <button class="play">
+                        <i id="play" class="fas fa-play"></i>
+                    </button>
+                    <button class="next">
+                        <i id="next" class="fas fa-forward"></i>
+                    </button>
+                </section>
+
+                <!-- Song list -->
+                <ul class="songs" id="songs">
+                    <ul id="songs_user" style="display: none">
+                        {{dump(podcasts)}}
+                        {% for podcast in podcasts %}
+                            <li>
+                                <p class="id_song">{{ podcast.id }}</p>
+                                <p class="title_song">{{ podcast.title|capitalize }}</p>
+                                <p class="audio_song">{{ asset('uploads/audios/') }}{{podcast.audio}}</p>
+                                <p class="cover_song">{{ asset('uploads/images/') }}{{podcast.image}}</p>
+                            </li>
+                        {% endfor %}    
+                    </ul>
+                    
+                </ul>
+            </section>
+            </div>
+            </div>
+        {% else %}
+            <p class="lead display-4 text-center mt-4">This user dont have uploaded podcasts yet</p>
+            
+        {% endif %}
+
+    </div>
+
+    <!-- Delete podcasdt modal -->
+    
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3 class="modal-title p-2 text-align-center mb-2" id="exampleModalLabel">Are you sure you want to delete podcast?</h3>
+                    
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary m-1" data-bs-dismiss="modal" >Cancel</button>
+                        <a class="btn btn-primary m-1" id="podcast-delete" href="{{ path('podcast_remove_admin', {id: 'x'}) }}">Yes</a>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/podcast/script.js') }}"></script>
+    <script src="{{ asset('js/admin/script-admin.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/podcast/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css" />
+{% endblock %}
+
+{% block title %}Detail Podcast!{% endblock %}
+
+{% block body %}
+
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('app_login') }}">PodcastApp</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse hide-style" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    
+                    <li class="nav-item"> 
+                        <a class="nav-link active lead" href="#">
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" viewBox="0 0 510 510" style="enable-background:new 0 0 510 510;" xml:space="preserve">
+                                <g id="account-circle">
+                                <path d="M255,0C114.75,0,0,114.75,0,255s114.75,255,255,255s255-114.75,255-255S395.25,0,255,0z M255,76.5
+                                c43.35,0,76.5,33.15,76.5,76.5s-33.15,76.5-76.5,76.5c-43.35,0-76.5-33.15-76.5-76.5S211.65,76.5,255,76.5z M255,438.6
+                                c-63.75,0-119.85-33.149-153-81.6c0-51,102-79.05,153-79.05S408,306,408,357C374.85,405.45,318.75,438.6,255,438.6z"/>
+                                </g>
+                            </svg>
+                        {{user.getFirstName|capitalize}}</a>
+                    </li>
+                    
+                    {% if user.getRoles|length > 1 %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_admin') }}" class="btn btn-success">Administration Zone</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-current="page" href="#">Upload Podcast</a>
+                    </li>
+
+                    <li class="nav-item" style="margin-left: 5px">
+                        <a class="btn btn-secondary" href="{{ path('app_logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-6 col-sm-12">
+                
+                    <a class="btn btn-secondary mb-2" href="{{ path('index_podcast') }}"> Back </a>
+                    
+                    {% if error %}
+                        <div class="alert alert-danger mt-2 mb-2 alert-dismissible" role="alert">
+                            An error has occurred, verify your data 
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                    
+                    {% if success %}
+                        <div class="alert alert-success alert-dismissible" role="alert">
+                            <div>Podcast update!</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+        
+                {{ form(edit_form) }} 
+                
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/podcast/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css" />
+{% endblock %}
+
+{% block title %}Welcome!{% endblock %}
+
+{% block body %}
+   <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('app_login') }}">PodcastApp</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse hide-style" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    
+                    <li class="nav-item"> 
+                        <a class="nav-link active lead" href="#">
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" viewBox="0 0 510 510" style="enable-background:new 0 0 510 510;" xml:space="preserve">
+                                <g id="account-circle">
+                                <path d="M255,0C114.75,0,0,114.75,0,255s114.75,255,255,255s255-114.75,255-255S395.25,0,255,0z M255,76.5
+                                c43.35,0,76.5,33.15,76.5,76.5s-33.15,76.5-76.5,76.5c-43.35,0-76.5-33.15-76.5-76.5S211.65,76.5,255,76.5z M255,438.6
+                                c-63.75,0-119.85-33.149-153-81.6c0-51,102-79.05,153-79.05S408,306,408,357C374.85,405.45,318.75,438.6,255,438.6z"/>
+                                </g>
+                            </svg>
+                        {{user.getFirstName|capitalize}}</a>
+                    </li>
+                    
+                    {% if user.getRoles|length > 1 %}
+                        <li class="nav-item">
+                            <a href="{{ path('app_admin') }}" class="btn btn-success">Administration Zone</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="nav-item" style="margin-left: 5px">
+                        <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-current="page" href="#">Upload Podcast</a>
+                    </li>
+
+                    <li class="nav-item" style="margin-left: 5px">
+                        <a class="btn btn-secondary" href="{{ path('app_logout') }}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Podcast</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   {{ form(form, {'method': 'POST', 'action': path('new_podcast')}) }}
+                </div>
+          
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        {% if error.state %}
+            <div class="alert alert-danger mt-2 mb-2 alert-dismissible" role="alert">
+                {{ error.message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+
+        {% if success.state %}
+            <div class="alert alert-success mt-2 mb-2 alert-dismissible" role="alert">
+                <div> {{ success.message }} </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}   
+
+
+        {% if user.getPodcasts|length != 0 %}
+            <div class="row d-flex justify-content-center">
+            <div class="col-md-6 col-sm-12">
+            
+            <section class="player mt-4">
+
+                <!-- Title -->
+                <h1 class="title" id="title"></h1>
+
+                <!-- Cover -->
+                <img src="" alt="" class="cover" id="cover">
+
+                <!-- Audio HTML Media elememt -->
+                <audio src="" id="audio"></audio>
+
+                <!-- Progress bar -->
+                <div id="progresscontainer" class="progresscontainer">
+                    <section id="progress" class="progress"></section>
+                </div>
+
+                <!-- Controls -->
+                <section class="controls">
+                    <button class="prev">
+                        <i id="prev" class="fas fa-backward"></i>
+                    </button>
+                    <button class="play">
+                        <i id="play" class="fas fa-play"></i>
+                    </button>
+                    <button class="next">
+                        <i id="next" class="fas fa-forward"></i>
+                    </button>
+                </section>
+
+                <!-- Song list -->
+                <ul class="songs" id="songs">
+
+                    <ul id="songs_user" style="display: none">
+                        {% for podcast in podcasts %}
+                            <li>
+                                <p class="id_song">{{ podcast.id }}</p>
+                                <p class="title_song">{{ podcast.title|capitalize }}</p>
+                                <p class="audio_song">{{ asset('uploads/audios/') }}{{podcast.audio}}</p>
+                                <p class="cover_song">{{ asset('uploads/images/') }}{{podcast.image}}</p>
+                            </li>
+                        {% endfor %}    
+                    </ul>
+                    
+                </ul>
+            </section>
+            </div>
+            </div>
+        {% else %}
+                <p class="lead display-4 text-center mt-4">You haven't uploaded podcasts yet</p>
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-current="page" href="#">Upload Podcast!</a>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <!-- Delete podcasdt modal -->
+    
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3 class="modal-title p-2 text-align-center mb-2" id="exampleModalLabel">Are you sure you want to delete podcast?</h3>
+                    
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary m-1" data-bs-dismiss="modal" >Cancel</button>
+                        <a class="btn btn-primary m-1" id="podcast-delete" href="{{ path('remove_podcast', {id: 'x'}) }}">Yes</a>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/podcast/script.js') }}"></script>
+{% endblock %}

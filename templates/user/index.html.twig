@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/login/register.css') }}">
+{% endblock %}
+
+{% block title %}Welcome!{% endblock %}
+
+{% block body %}
+    <nav class="navbar navbar-expand-lg bg-primary mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('app_login') }}">PodcastApp</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse hide-style" id="navbarSupportedContent">
+                <ul class="navbar-nav m-0">
+                    <li class="nav-item">
+                        <a class="btn btn-secondary" href="{{ path('app_login') }}">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6 col-sm-12">
+                {{ form(register_form) }} 
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/login/styles.css') }}">
+{% endblock %}
+
+
+{% block title %}Welcome!{% endblock %}
+
+{% block body %}
+    
+
+
+    <div class="container">
+
+        <form 
+            class="form-group" 
+            action="{{ path('app_login') }}" 
+            method="post"
+        >
+
+            <div class="row d-flex justify-content-center">
+                <div class="form-group col-md-4 col-sm-12">
+                    
+                    {% if app.request.query.get('message') != null %}
+                        <div class="alert alert-success mt-2 mb-2 alert-dismissible" role="alert">
+                            {{ app.request.query.get('message') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+
+                    {% if error %}
+                        <div class="alert alert-danger mt-2 mb-2 alert-dismissible" role="alert">
+                            {{ error.message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                    <label for="username">Email:</label>
+                    <input placeholder="email" class="form-control" type="text" id="username" name="_username" value="{{ last_username }}">
+                </div>
+            <div>
+            
+            <div class="row d-flex justify-content-center">
+                <div class="form-group col-md-4 col-sm-12">
+                    <label for="password">Password:</label>
+                    <input placeholder="password" class="form-control" type="password" id="password" name="_password">
+                </div>
+            <div>
+            
+            {# If you want to control the URL the user is redirected to on success #}
+            <input type="hidden" name="_target_path" value="/podcast"> 
+
+            <div class="row d-flex justify-content-center">
+                <div class="form-group mt-4 col-md-4 col-sm-12">
+                    <button class="form-control btn btn-primary" type="submit">Login</button> 
+                </div>
+            <div>
+
+            <div class="row d-flex justify-content-center">
+                <div class="form-group mt-4 col-md-4 col-sm-12">
+                    <a class="form-control btn btn-primary" href="{{ path('register_user') }}">Register</a>
+                </div>
+            <div>
+            
+        </form>
+
+    </div>
+{% endblock %}

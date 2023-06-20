@@ -1,0 +1,16 @@
+@media (min-width: 991px) {
+
+    .hide-style {
+        display: flex;
+        justify-content: end;
+    }
+
+}
+
+@media (max-width: 991px) {
+
+    .hide-style {
+        margin-top: 20px;
+    }
+
+}
